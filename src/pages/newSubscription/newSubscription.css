@@ -1,0 +1,44 @@
+.new-subscription {
+    /* flex: 4; */
+    margin: auto;
+    width: 80%;
+    margin-top: 25px;
+  }
+  
+  .add-subscription-form {
+    margin-top: 30px;
+  }
+  
+  .add-subscription-item {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .add-subscription-item > label {
+    color: gray;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .add-subscription-item > input {
+    padding: 10px;
+  }
+  
+  .add-subscription-item > select {
+    padding: 10px;
+  }
+  
+  .add-subscription-button {
+    width: 120px;
+    margin-top: 10px;
+    padding: 15px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #155958;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  

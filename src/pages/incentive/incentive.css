@@ -1,0 +1,106 @@
+.flex{
+    display: flex;
+}
+.incentive-select{
+    width: 66% !important;
+}
+.incentive{
+    margin: auto;
+    width: 90%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+}
+.incentive-top{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 20px;
+    border: none;
+    padding: 15px 20px;
+    background-color: #303030;
+    border-radius: 20px;
+    color: white;
+    width: 160px;
+}
+.incentive-form{
+    margin-left: 20%;
+}
+.incentive-form-wrapper{
+    
+    display: flex;
+}
+.incentive-form-container{
+    margin: auto;
+    width: 100%;
+
+    
+    /* margin-left: 15% !important; */
+    display: flex;
+    /* justify-content: space-between !important; */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+.incentive-form-left{
+    width: auto !important;
+}
+.incentive-form-right{
+    width: auto !important;
+}
+.incentive-input{
+    outline: none;
+    border: 1px solid  rgba(120,109,109,0.97);
+    border-radius: 8px;
+    /* box-shadow: 1px 2px grey; */
+    flex: 1;
+  /* min-width: 40%; */
+  width: 60%;
+  margin: 10px 35px;
+  padding: 20px;
+}
+.incentive-button{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    /* margin-bottom: 20px; */
+    border: none;
+    padding: 15px 20px;
+    background-color: #155958;
+    border-radius: 20px;
+    color: white;
+    width: 160px;
+    cursor: pointer;
+}
+
+.map-input{
+    outline: none;
+    border: 1px solid  rgba(120,109,109,0.97);
+    border-radius: 8px;
+    /* box-shadow: 1px 2px grey; */
+    /* box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97);
+-webkit-box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97);
+-moz-box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97); */
+    /* flex: 1; */
+  /* min-width: 40%; */
+  width: 45vh;
+  margin: 10px;
+  padding: 10px;
+}
+.incentive-form-bottom{
+    width:50%;
+}
+@media screen and (max-width: 480px) {
+    .incentive-form-container{
+        width: unset;
+        margin-left: unset;
+        justify-content: unset;
+        flex-direction: column;
+    }
+    .incentive-button{
+        margin-top: 70px;
+    }
+    .incentive-form-right{
+        margin-top: 20px;
+    }
+    }

@@ -1,0 +1,44 @@
+.css-f3jnds-MuiDataGrid-columnHeaders{
+    background-color: #303030;
+    color: white;
+  }
+  .incentive{
+      margin: auto;
+      width: 90%;
+      margin-top: 40px;
+      margin-bottom: 40px;
+  }
+  .incentive-heading{
+      display: flex;
+      justify-content: center;
+      margin: auto;
+      border: none;
+    padding: 15px 20px;
+    background-color: #303030;
+    border-radius: 20px;
+    color: white;
+    width: 130px;
+  }
+  
+  .img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .incentive-list-edit{
+      border: none;
+      border-radius: 10px;
+      padding: 5px 10px;
+      background-color: #3bb077;
+      color: white;
+      cursor: pointer;
+      margin-right: 20px;
+  }
+  
+  .incentive-list-delete{
+      color: red;
+      cursor: pointer;
+  }

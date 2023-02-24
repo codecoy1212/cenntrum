@@ -1,0 +1,51 @@
+.css-f3jnds-MuiDataGrid-columnHeaders{
+  background-color: #303030;
+  color: white;
+}
+.users{
+    margin: auto;
+    width: 90%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.users-heading{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    border: none;
+  padding: 15px 20px;
+  background-color: #303030;
+  border-radius: 20px;
+  color: white;
+  width: 130px;
+}
+.users-list-action{
+  display: flex;
+  align-items: center;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    /* background-color: #3bb077; */
+    background-color: #d30c0c;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.users-list-view{
+  display: flex;
+  align-items: center;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    /* background-color: #d30c0c; */
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.users-list-delete{
+    color: white;
+    cursor: pointer;
+}

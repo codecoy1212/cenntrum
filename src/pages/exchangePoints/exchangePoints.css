@@ -1,0 +1,51 @@
+.css-f3jnds-MuiDataGrid-columnHeaders{
+    background-color: #303030;
+    color: white;
+  }
+  .css-de9k3v-MuiDataGrid-selectedRowCount{
+    visibility: hidden;
+  }
+  .exchange{
+      margin: auto;
+      width: 90%;
+      margin-top: 40px;
+      margin-bottom: 40px;
+  }
+  .exchange-top{
+    display: flex;
+    margin: 0 15%;
+  }
+  .exchange-name{
+      display: flex;
+      justify-content: center;
+      margin: auto;
+      border: none;
+    padding: 15px 20px;
+    background-color: #303030;
+    border-radius: 20px;
+    color: white;
+    width: 160px;
+  }
+  .exchange-list-edit{
+      border: none;
+      border-radius: 10px;
+      padding: 5px 10px;
+      background-color: #3bb077;
+      color: white;
+      cursor: pointer;
+      margin-right: 20px;
+  }
+  
+  .exchange-list-delete{
+      color: red;
+      cursor: pointer;
+  }
+
+  @media screen and (max-width: 480px) {
+    .exchange-top{
+      margin: 0 8%;
+    }
+    .exchange-name{
+      margin: 0 10px;
+    }
+    }

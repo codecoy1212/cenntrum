@@ -1,0 +1,54 @@
+.css-f3jnds-MuiDataGrid-columnHeaders{
+    background-color: #303030;
+    color: white;
+  }
+  .css-de9k3v-MuiDataGrid-selectedRowCount{
+    visibility: hidden;
+  }
+  .earned{
+      margin: auto;
+      width: 90%;
+      margin-top: 40px;
+      margin-bottom: 40px;
+  }
+  .earned-top{
+    display: flex;
+    margin: 0 15%;
+  }
+  .earned-name{
+      display: flex;
+      justify-content: center;
+      margin: auto;
+      border: none;
+    padding: 15px 20px;
+    background-color: #303030;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    width: 130px;
+  }
+  
+  
+  
+  .earned-list-edit{
+      border: none;
+      border-radius: 10px;
+      padding: 5px 10px;
+      background-color: #3bb077;
+      color: white;
+      cursor: pointer;
+      margin-right: 20px;
+  }
+  
+  .earned-list-delete{
+      color: red;
+      cursor: pointer;
+  }
+  @media screen and (max-width: 480px) {
+  .earned-top{
+    margin: 0 8%;
+  }
+  .earned-name{
+    margin: 0 10px;
+  }
+  }

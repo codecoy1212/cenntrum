@@ -1,0 +1,41 @@
+.menu{
+    margin: auto;
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+}
+.menu-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 25px;
+    margin-top: 35px;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 35px;
+}
+.menu-item{
+    border: 1px solid grey;
+    border-radius: 0px 12px 12px 12px;
+    width: 280px;
+    padding: 15px;
+    /* align-items: center; */
+}
+.menu-link{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-logout{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}

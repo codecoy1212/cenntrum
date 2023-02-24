@@ -1,0 +1,76 @@
+.crypto{
+    margin: auto;
+    width: 90%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+}
+.crypto-top{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 20px;
+    border: none;
+    padding: 15px 20px;
+    background-color: #303030;
+    border-radius: 20px;
+    color: white;
+    width: 160px;
+}
+.crypto-form-wrapper{
+    
+    display: flex;
+}
+.crypto-form-container{
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    width: 80%;
+    /* margin-left: 15% !important; */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.crypto-form-left{
+    width: 50%;
+}
+/* .crypto-form-right{
+    width: 50%;
+} */
+.crypto-input{
+    outline: none;
+    border: 1px solid  rgba(120,109,109,0.97);
+    border-radius: 8px;
+    /* box-shadow: 1px 2px grey; */
+    flex: 1;
+  /* min-width: 40%; */
+  width: 260px;
+  margin: 10px 35px;
+  padding: 20px;
+}
+.crypto-button{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    /* margin-bottom: 20px; */
+    border: none;
+    padding: 15px 20px;
+    background-color: #155958;
+    border-radius: 20px;
+    color: white;
+    width: 160px;
+}
+
+@media screen and (max-width: 480px) {
+    .crypto-form-container{
+        width: unset;
+        margin-left: unset;
+        justify-content: unset;
+    }
+    .crypto-button{
+        margin-top: 70px;
+    }
+    .crypto-form-right{
+        margin-top: 20px;
+    }
+    }
