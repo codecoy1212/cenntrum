@@ -10,10 +10,19 @@ import {
   incentiveList,
 } from "../../redux/features/incentiveSlice";
 
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import { IMAGE_BASE_URL } from "../../redux/api";
+
 const Incentives = () => {
   const { incentives, loading, error } = useSelector((state) => ({
     ...state.incentive,
   }));
+  const [incentivesFilter, setIncentivesFilter] = useState([]);
+  const [isFilter, setisFilter] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,6 +37,11 @@ const Incentives = () => {
     dispatch(incentiveList());
   }, []);
 
+  const filter = (event, value) => {
+    setisFilter(true);
+    setIncentivesFilter(incentives.filter((item) => item.type == value));
+  };
+
   const columns = [
     { field: "id", headerName: "ID Number", width: 100 },
     { field: "name", headerName: "Name", width: 130 },
@@ -38,8 +52,13 @@ const Incentives = () => {
       renderCell: (params) => {
         return (
           <>
+            {console.log(IMAGE_BASE_URL + params.row.img)}
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <img className="img" src={params.row.img} alt="" />
+              <img
+                className="img"
+                src={IMAGE_BASE_URL + params.row.img}
+                alt=""
+              />
             </div>
           </>
         );
@@ -53,6 +72,43 @@ const Incentives = () => {
       width: 110,
     },
     { field: "req_point", headerName: "Required Points", width: 150 },
+    {
+      field: "type",
+      headerName: "Type",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.type === 1 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 5,
+                  borderRadius: 10,
+                  background: "green",
+                  color: "#fff",
+                }}
+              >
+                Gift
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 5,
+                  borderRadius: 10,
+                  background: "yellow",
+                }}
+              >
+                Crypto
+              </div>
+            )}
+          </>
+        );
+      },
+    },
     // {
     //   field: "location",
     //   headerName: "Location",
@@ -78,7 +134,10 @@ const Incentives = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/updateIncentive/" + params.row.id}>
+            <Link
+              to={"/updateIncentive/" + params.row.id}
+              state={{ data: params.row }}
+            >
               <button className="incentive-list-edit">Edit</button>
             </Link>
             <DeleteOutlineOutlinedIcon
@@ -94,12 +153,27 @@ const Incentives = () => {
   return (
     <div className="incentive">
       <div className="incentive-heading">Incentives</div>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div style={{ height: 400, marginTop: "20px" }}>
+          <FormControl>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Filter
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              onChange={filter}
+            >
+              <FormControlLabel value={1} control={<Radio />} label="gift" />
+              <FormControlLabel value={2} control={<Radio />} label="crypto" />
+            </RadioGroup>
+          </FormControl>
           <DataGrid
-            rows={incentives}
+            rows={isFilter ? incentivesFilter : incentives}
             columns={columns}
             pageSize={50}
             rowsPerPageOptions={[50]}

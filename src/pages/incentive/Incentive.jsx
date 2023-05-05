@@ -35,16 +35,19 @@ import axios from "../../axios";
 const initialState = {
   name: "",
   value: "",
+  gift_value: "",
   quantity: "",
   req_point: "",
   laat: 31.4689545,
   lang: 74.26450799999999,
   radius: "",
-  description:" ",
-  cardcode:"",
-  locationStatus:false,
-  businessList:[],
-  business_id:0,
+  description: " ",
+  cardcode: "",
+  locationStatus: false,
+  businessList: [],
+  business_id: 0,
+  expiry_date: "",
+  img: "",
 };
 const initialMapState = {
   address: "",
@@ -58,7 +61,8 @@ const initialMapState = {
   lat: 31.4689545,
   lng: 74.26450799999999,
   mapCenter: "",
-  divStatus:1
+  divStatus: 1,
+  expiry_date: "",
 };
 
 export const Incentive = (props) => {
@@ -68,8 +72,23 @@ export const Incentive = (props) => {
     ...state.incentive,
   }));
 
-  const { name, value, quantity, req_point, laat, lang, radius, img ,cardcode,description,locationStatus,businessList,business_id} =
-    formValue;
+  const {
+    name,
+    value,
+    gift_value,
+    quantity,
+    req_point,
+    laat,
+    lang,
+    radius,
+    img,
+    cardcode,
+    description,
+    locationStatus,
+    businessList,
+    business_id,
+    expiry_date,
+  } = formValue;
 
   const {
     address,
@@ -79,7 +98,7 @@ export const Incentive = (props) => {
     // laat,
     // lang,
     mapCenter,
-    divStatus
+    divStatus,
   } = state;
 
   const dispatch = useDispatch();
@@ -87,16 +106,22 @@ export const Incentive = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValue);
+
+    const formData = new FormData();
+    Object.keys(formValue).forEach(function (key) {
+      formData.append(key, formValue[key]);
+    });
+    
+    // console.log(formValue);
     if (name && value && quantity && req_point) {
-    dispatch(createIncentive({ formValue, navigate }));
+      dispatch(createIncentive({ formValue, navigate }));
     }
   };
   useEffect(() => {
     async function fetchData() {
       const req2 = await axios.get("/business_list");
-      let name="businessList";
-      let value=req2.data.data;
+      let name = "businessList";
+      let value = req2.data.data;
       setFormValue({ ...formValue, [name]: value });
       // setInterval(fetchData, 1000);
     }
@@ -105,14 +130,13 @@ export const Incentive = (props) => {
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
-    
   };
 
   const onInputChange2 = (e) => {
     let { name, value } = e.target;
-    setState({ divStatus:value });
+    setState({ ...state, divStatus: value });
     setFormValue({ ...formValue, [name]: value });
-       console.log(value);
+    console.log(value);
   };
 
   const onInputChange3 = (e) => {
@@ -121,15 +145,27 @@ export const Incentive = (props) => {
     console.log(checked);
   };
 
+  const onInputChange4 = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, expiry_date: value });
+    setFormValue({ ...formValue, [name]: value });
+  };
+
+  const uploadImage = (e) => {
+    let { name, files } = e.target;
+    setState({ ...state, img: files[0] });
+    setFormValue({ ...formValue, img: e.target.files[0] });
+  };
 
   const handleChange = (address) => {
-    setState({ address });
+    console.log(address);
+    setState({ ...state, address });
   };
 
   // const google = window.location;
 
   const handleSelect = (address) => {
-    setState({ address });
+    setState({ ...state, address });
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
@@ -159,71 +195,70 @@ export const Incentive = (props) => {
       <div className="incentive-form-wrapper">
         <form className="incentive-form" onSubmit={handleSubmit}>
           <div className="incentive-form-container">
-            <div className={`banner ${(divStatus==1) ? "incentive-form" : "incentive-form-left"}`} >
-
+            <div
+              className={`banner ${
+                divStatus == 1 ? "incentive-form" : "incentive-form-left"
+              }`}
+            >
               <div>
-               
-               
                 <div>
-              
                   <label>Incentive Type</label>
                   <select
-                  
                     className="incentive-input incentive-select"
-                   
                     value={divStatus}
                     name="type"
                     onChange={onInputChange2}
                   >
                     <option value="1">Gift Card</option>
                     <option value="2">Crypto</option>
-                    </select>
+                  </select>
                 </div>
-                { (divStatus==1) &&
-                <div>
-                   <div>
-               
-               <label>Select Business</label>
-               <select
-               
-                 className="incentive-input incentive-select"
-                
-                 value={business_id}
-                 name="business_id"
-                 onChange={onInputChange}
-               >
-                
-                {businessList.map((option) => (
-           <option value={option.id}>{option.name}</option>
-         ))}
-                 </select>
-             </div>
-                <div>
-                  <label>Gift Card Pre Code</label>
-                  <input
-                  
-                    className="incentive-input"
-                   
-                    value={cardcode}
-                    name="cardcode"
-                    placeholder="GiftCode-"
-                    onChange={onInputChange}
-                  />
-                    
-                </div>
-                <div>
-                  <label>Minimum Purchase to Avail Discount</label>
-                  <input
-                  
-                    className="incentive-input"
-                   type="number"
-                    value={value}
-                    name="value"
-                    onChange={onInputChange}
-                  />
-                    
-                </div>
-                 {/* <div>
+                {divStatus == 1 && (
+                  <div>
+                    <div>
+                      <label>Select Business</label>
+                      <select
+                        className="incentive-input incentive-select"
+                        value={business_id}
+                        name="business_id"
+                        onChange={onInputChange}
+                      >
+                        {businessList.map((option) => (
+                          <option value={option.id}>{option.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label>Gift Card Pre Code</label>
+                      <input
+                        className="incentive-input"
+                        value={cardcode}
+                        name="cardcode"
+                        placeholder="GiftCode-"
+                        onChange={onInputChange}
+                      />
+                    </div>
+                    <div>
+                      <label>Gift Card Value</label>
+                      <input
+                        className="incentive-input"
+                        type="number"
+                        value={gift_value}
+                        name="gift_value"
+                        onChange={onInputChange}
+                      />
+                    </div>
+                    <div>
+                      <label>Minimum Purchase to Avail Discount</label>
+                      <input
+                        className="incentive-input"
+                        type="number"
+                        value={value}
+                        name="value"
+                        onChange={onInputChange}
+                      />
+                    </div>
+                    {/* <div>
                  <label> Description</label>
                  <textarea
                  
@@ -235,9 +270,8 @@ export const Incentive = (props) => {
                  ></textarea>
                    
                </div> */}
-               </div>
-                
-}
+                  </div>
+                )}
                 <div>
                   <label> Name</label>
                   <input
@@ -249,19 +283,19 @@ export const Incentive = (props) => {
                     onChange={onInputChange}
                   />
                 </div>
-                { (divStatus==2) &&
-                <div>
-                  <label> Value</label>
-                  <input
-                    type="number"
-                    className="incentive-input"
-                    placeholder="Enter Incentive value"
-                    value={value}
-                    name="value"
-                    onChange={onInputChange}
-                  />
-                </div>
-}
+                {divStatus == 2 && (
+                  <div>
+                    <label>Quantity of crypto</label>
+                    <input
+                      type="number"
+                      className="incentive-input"
+                      placeholder="Enter Quantity Of Crypto"
+                      value={value}
+                      name="value"
+                      onChange={onInputChange}
+                    />
+                  </div>
+                )}
                 <div>
                   <label>Quantity</label>
                   <input
@@ -284,17 +318,34 @@ export const Incentive = (props) => {
                     onChange={onInputChange}
                   />
                 </div>
-                {/* <div>
-                  <label>Max Distance</label>
-                  <input
-                    type="text"
-                    className="incentive-input"
-                    placeholder="Max. Distance"
-                    value={radius}
-                    name="radius"
-                    onChange={onInputChange}
-                  />
-                </div> */}
+
+                {divStatus == 1 && (
+                  <div>
+                    <label>Expiry Date</label>
+                    <input
+                      type="date"
+                      className="incentive-input"
+                      placeholder="Enter Expiry Date"
+                      value={expiry_date}
+                      name="expiry_date"
+                      onChange={onInputChange4}
+                    />
+                  </div>
+                )}
+
+                {locationStatus && divStatus == 2 && (
+                  <div>
+                    <label>Max Distance</label>
+                    <input
+                      type="text"
+                      className="incentive-input"
+                      placeholder="Max. Distance To Show Incentive"
+                      value={radius}
+                      name="radius"
+                      onChange={onInputChange}
+                    />
+                  </div>
+                )}
 
                 {/* <div style={{ margin: "10px 35px" }}> */}
                 <div>
@@ -311,32 +362,31 @@ export const Incentive = (props) => {
                       style={{ marginRight: "5px" }}
                     />
                     <span>Choose Image</span>
-                    {/* <input
-                    style={{ display: "none" }}
-                    type='file'
-                    id='file'
-                    accept='.png,.jpeg,.jpg'
-                    value={img}
-                    name='img'
-                    onChange={onInputChange}
-                  /> */}
-                    <FileBase
+                    <input
+                      type="file"
+                      id="file"
+                      accept=".png,.jpeg,.jpg"
+                      name="img"
+                      onChange={uploadImage}
+                    />
+                    {/* <FileBase
                       style={{ display: "none" }}
                       type="file"
                       multiple={false}
                       onDone={({ base64 }) =>
                         setFormValue({ ...formValue, img: base64 })
                       }
-                    />
+                    /> */}
                   </label>
                 </div>
-                
               </div>
             </div>
-           
+
             <div className="incentive-form-right">
-            { (divStatus==2) &&
-                <h3 className="flex">Sponser Location  <input
+              {divStatus == 2 && (
+                <h3 className="flex">
+                  Sponser Location
+                  <input
                     type="checkbox"
                     className="incentive-input"
                     placeholder="Max. Distance"
@@ -345,113 +395,109 @@ export const Incentive = (props) => {
                     onChange={onInputChange3}
                   />
                 </h3>
-}
-                { (locationStatus && divStatus==2) &&
-              <div>
-              
-                <div
-                  style={{
-                    width: "100% !important",
-                    height: "100vh !important",
-                  }}
-                >
-                  {/* <Map value={props.latLng} onChange={onInputChange} /> */}
+              )}
+              {locationStatus && divStatus == 2 && (
+                <div>
                   <div
-                    id="googleMaps"
-                    style={{ width: "50vh", height: "50vh" }}
+                    style={{
+                      width: "100% !important",
+                      height: "100vh !important",
+                    }}
                   >
-                    <PlacesAutocomplete
-                      value={address}
-                      onChange={handleChange}
-                      onSelect={handleSelect}
+                    {/* <Map value={props.latLng} onChange={onInputChange} /> */}
+                    <div
+                      id="googleMaps"
+                      style={{ width: "50vh", height: "50vh" }}
                     >
-                      {({
-                        getInputProps,
-                        suggestions,
-                        getSuggestionItemProps,
-                        loading,
-                      }) => (
-                        <div>
-                          <input
-                            className="map-input"
-                            {...getInputProps({
-                              placeholder: "Search Places ...",
-                              // className: "location-search-input",
-                              className: "map-input",
-                            })}
-                          />
-                          <div className="autocomplete-dropdown-container">
-                            {loading && <div>Loading...</div>}
-                            {suggestions.map((suggestion) => {
-                              const className = suggestion.active
-                                ? "suggestion-item--active"
-                                : "suggestion-item";
-                              // inline style for demonstration purpose
-                              const style = suggestion.active
-                                ? {
-                                    backgroundColor: "#fafafa",
-                                    cursor: "pointer",
-                                    // padding: "10px",
-                                  }
-                                : {
-                                    backgroundColor: "#ffffff",
-                                    cursor: "pointer",
-                                    // padding: "10px",
-                                    margin: "10px",
-                                  };
-                              return (
-                                <div
-                                  {...getSuggestionItemProps(suggestion, {
-                                    className,
-                                    style,
-                                  })}
-                                >
-                                  <span>{suggestion.description}</span>
-                                </div>
-                              );
-                            })}
+                      <PlacesAutocomplete
+                        value={address}
+                        onChange={handleChange}
+                        onSelect={handleSelect}
+                      >
+                        {({
+                          getInputProps,
+                          suggestions,
+                          getSuggestionItemProps,
+                          loading,
+                        }) => (
+                          <div>
+                            <input
+                              className="map-input"
+                              {...getInputProps({
+                                placeholder: "Search Places ...",
+                                // className: "location-search-input",
+                                className: "map-input",
+                              })}
+                            />
+                            <div className="autocomplete-dropdown-container">
+                              {loading && <div>Loading...</div>}
+                              {suggestions.map((suggestion) => {
+                                const className = suggestion.active
+                                  ? "suggestion-item--active"
+                                  : "suggestion-item";
+                                // inline style for demonstration purpose
+                                const style = suggestion.active
+                                  ? {
+                                      backgroundColor: "#fafafa",
+                                      cursor: "pointer",
+                                      // padding: "10px",
+                                    }
+                                  : {
+                                      backgroundColor: "#ffffff",
+                                      cursor: "pointer",
+                                      // padding: "10px",
+                                      margin: "10px",
+                                    };
+                                return (
+                                  <div
+                                    {...getSuggestionItemProps(suggestion, {
+                                      className,
+                                      style,
+                                    })}
+                                  >
+                                    <span>{suggestion.description}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </PlacesAutocomplete>
+                        )}
+                      </PlacesAutocomplete>
 
-                    <Map
-                      google={props.google}
-                      initialCenter={{
-                        lat: laat,
-                        lng: lang,
-                      }}
-                      center={{
-                        // mapCenter.lat
-                        // ()
-                        lat: laat,
-                        lng: lang,
-                      }}
-                      zoom={14}
-                      containerStyle={{ height: "58vh", width: "inherit" }}
-                    >
-                      <Marker
-                        position={{
+                      <Map
+                        google={props.google}
+                        initialCenter={{
                           lat: laat,
                           lng: lang,
                         }}
-                        draggable
-                        // onChange={handleSelect}
+                        center={{
+                          // mapCenter.lat
+                          // ()
+                          lat: laat,
+                          lng: lang,
+                        }}
+                        zoom={14}
+                        containerStyle={{ height: "58vh", width: "inherit" }}
+                      >
+                        <Marker
+                          position={{
+                            lat: laat,
+                            lng: lang,
+                          }}
+                          draggable
+                          // onChange={handleSelect}
 
-                        // onChange={onMarkerClick}
-                      />
-                    </Map>
+                          // onChange={onMarkerClick}
+                        />
+                      </Map>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-}
+              )}
             </div>
-
-
           </div>
           <div className="incentive-form-bottom">
-          <button className="incentive-button">Create</button>
+            <button className="incentive-button">Create</button>
           </div>
         </form>
       </div>

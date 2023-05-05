@@ -1,8 +1,15 @@
 import axios from "axios";
 
+// const API = axios.create({
+//   baseURL: "https://cenntrum.codecoyapps.com",
+// });
+// export const IMAGE_BASE_URL =
+//   "https://cenntrum.codecoyapps.com/public/storage/";
 const API = axios.create({
-  baseURL: "https://cenntrum.codecoyapps.com",
+  baseURL: "https://wh717090.ispot.cc/cenntrum_live",
 });
+export const IMAGE_BASE_URL =
+  "https://wh717090.ispot.cc/cenntrum_live/public/storage/";
 
 //   API.interceptors.request.use((req) => {
 //     if (localStorage.getItem("profile")) {
@@ -43,10 +50,16 @@ export const deleteSubsPkg = (id) => API.get(`/api/delete_subs_pkg/${id}`);
 // incentive
 
 export const incentiveList = () => API.get("/api/insentive_list");
-export const createIncentive = (formData) =>
-  API.post("/api/add_insentive", formData);
+export const createIncentive = (formData) => {
+  return axios({
+    method: "post",
+    url: "https://cenntrum.codecoyapps.com/api/add_insentive",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
-  
+  // return API.post("/api/add_insentive", { data: formData });
+};
 
 export const updateIncentive = (formData, id) =>
   API.post(`/api/update_incentive/${id}`, formData);
@@ -84,13 +97,11 @@ export const accumulatedPoints = (userId) =>
   API.post(`/api/my_points?user_id=${userId}`);
 export const points = (userId) => API.get(`/api/my_rewards?user_id=${userId}`);
 
-// business 
+// business
 
-  export const createBusiness = (formData) =>
+export const createBusiness = (formData) =>
   API.post("/api/add_business", formData);
 
 export const businessList = () => API.get("/api/business_list");
 export const businessDetail = (id) => API.get(`/api/business_detail/${id}`);
 export const deleteBusiness = (id) => API.get(`/api/delete_business/${id}`);
-
-

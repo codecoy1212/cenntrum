@@ -5,7 +5,16 @@ export const createIncentive = createAsyncThunk(
   "incentive/createIncentive",
   async ({ formValue, navigate }, { rejectWithValue }) => {
     try {
-      const response = await api.createIncentive(formValue);
+      const formData = new FormData();
+
+      Object.keys(formValue).forEach(function (key) {
+        formData.append(key, formValue[key]);
+      });
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + " - " + pair[1]);
+      }
+      const response = await api.createIncentive(formData);
+      console.log(formValue);
       navigate("/menu");
       window.location.reload();
       return response.data;
@@ -31,8 +40,22 @@ export const updateIncentive = createAsyncThunk(
   "incentive/updateIncentive",
   async ({ id, formValue, navigate }, { rejectWithValue }) => {
     try {
-      const response = await api.updateIncentive(formValue, id);
+      var formData = new FormData();
+
+      Object.keys(formValue).forEach(function (key) {
+        // if (key === "img") {
+        //   formData.append(key, null);
+        // } else
+        formData.append(key, formValue[key]);
+      });
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + " - " + pair[1]);
+      }
+
+      const response = await api.updateIncentive(formData, id);
+      console.log(response);
       navigate("/incentives");
+      window.location.reload();
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);

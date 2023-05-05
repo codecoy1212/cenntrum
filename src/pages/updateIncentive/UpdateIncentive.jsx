@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   createIncentive,
   updateIncentive,
@@ -14,35 +14,54 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import { IMAGE_BASE_URL } from "../../redux/api";
 
-const initialState = {
-  name: "",
-  value: "",
-  quantity: "",
-  req_point: "",
-  laat: 31.4689545,
-  lang: 74.26450799999999,
-  radius: "",
-};
-const initialMapState = {
-  address: "",
-  showingInfoWindow: false,
-  activeMarker: {},
-  selectedPlace: {},
-  lat: 31.4689545,
-  lng: 74.26450799999999,
-  mapCenter: "",
-};
+const style = { display: "flex", flexDirection: "column", padding: 10 };
 
 export const UpdateIncentive = (props) => {
+  const location = useLocation();
+  const data = location.state?.data;
+  console.log(data);
+  const initialState = {
+    img: data?.img ?? "",
+    name: data?.name ?? "",
+    value: data?.value,
+    quantity: data?.quantity,
+    req_point: data?.req_point,
+    laat: data?.lat ?? "",
+    lang: data?.lng ?? "",
+    radius: data?.radius,
+    cardcode: data?.cardcode,
+    expiry_date: data?.expiry_date,
+  };
+  const initialMapState = {
+    address: "",
+    showingInfoWindow: false,
+    activeMarker: {},
+    selectedPlace: {},
+    lat: 31.4689545,
+    lng: 74.26450799999999,
+    mapCenter: "",
+  };
+
   const [state, setState] = useState(initialMapState);
   const [formValue, setFormValue] = useState(initialState);
   const { loading, error } = useSelector((state) => ({
     ...state.incentive,
   }));
 
-  const { name, value, quantity, req_point, laat, lang, radius, img } =
-    formValue;
+  const {
+    name,
+    value,
+    quantity,
+    req_point,
+    laat,
+    lang,
+    radius,
+    img,
+    cardcode,
+    expiry_date,
+  } = formValue;
 
   const {
     address,
@@ -60,14 +79,22 @@ export const UpdateIncentive = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (name && value && quantity && req_point) {
-    dispatch(updateIncentive({ id, formValue, navigate }));
-    // }
+
+    if (name && value && quantity && req_point) {
+      dispatch(updateIncentive({ id, formValue, navigate }));
+    }
   };
 
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
+  };
+
+  const uploadImage = (e) => {
+    let { name, files } = e.target;
+    console.log(files[0]);
+    setState({ ...state, img: files[0] });
+    setFormValue({ ...formValue, img: e.target.files[0] });
   };
 
   const handleChange = (address) => {
@@ -98,46 +125,114 @@ export const UpdateIncentive = (props) => {
         <form className="incentive-form" onSubmit={handleSubmit}>
           <div className="incentive-form-container">
             <div className="incentive-form-left">
-              <input
-                type="text"
-                className="incentive-input"
-                placeholder="Enter Incentive Name"
-                value={name}
-                name="name"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="incentive-input"
-                placeholder="Enter Incentive value"
-                value={value}
-                name="value"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="incentive-input"
-                placeholder="Enter Number Of Incentive"
-                value={quantity}
-                name="quantity"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="incentive-input"
-                placeholder="Enter Required Points"
-                value={req_point}
-                name="req_point"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="incentive-input"
-                placeholder="Max. Distance to show incentive"
-                value={radius}
-                name="radius"
-                onChange={onInputChange}
-              />
+              <div>
+                <div style={style}>
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    className="incentive-input"
+                    placeholder="Enter Incentive Name"
+                    value={name}
+                    name="name"
+                    onChange={onInputChange}
+                  />
+                </div>
+                {data?.type === 1 && (
+                  <>
+                    <div style={style}>
+                      <label>Gift Card Pre Code</label>
+                      <input
+                        className="incentive-input"
+                        value={cardcode}
+                        name="cardcode"
+                        placeholder="GiftCode-"
+                        disabled
+                      />
+                    </div>
+
+                    <div style={style}>
+                      <label>Minimum Purchase to Avail Discount</label>
+                      <input
+                        className="incentive-input"
+                        type="number"
+                        value={value}
+                        name="value"
+                        onChange={onInputChange}
+                      />
+                    </div>
+                  </>
+                )}
+                {/* <input
+                  type="text"
+                  className="incentive-input"
+                  placeholder="Enter Incentive value"
+                  value={value}
+                  name="value"
+                  onChange={onInputChange}
+                /> */}
+                {data?.type == 2 && (
+                  <div>
+                    <label>Quantity of crypto</label>
+                    <input
+                      type="number"
+                      className="incentive-input"
+                      placeholder="Enter Quantity Of Crypto"
+                      value={value}
+                      name="value"
+                      onChange={onInputChange}
+                    />
+                  </div>
+                )}
+                <div style={style}>
+                  <label>Quantity</label>
+                  <input
+                    type="text"
+                    className="incentive-input"
+                    placeholder="Enter Number Of Incentive"
+                    value={quantity}
+                    name="quantity"
+                    onChange={onInputChange}
+                  />
+                </div>
+                <div style={style}>
+                  <label>Required Points</label>
+                  <input
+                    type="text"
+                    className="incentive-input"
+                    placeholder="Enter Required Points"
+                    value={req_point}
+                    name="req_point"
+                    onChange={onInputChange}
+                  />
+                </div>
+                {data?.type === 1 && (
+                  <div>
+                    <label>Expiry Date</label>
+                    <input
+                      type="date"
+                      className="incentive-input"
+                      placeholder="Enter Expiry Date"
+                      value={expiry_date}
+                      name="expiry_date"
+                      onChange={onInputChange}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {data?.type === 2 && (
+                <div style={style}>
+                  <label>Max Distance</label>
+                  <input
+                    type="text"
+                    className="incentive-input"
+                    placeholder="Max. Distance to show incentive"
+                    value={radius}
+                    name="radius"
+                    onChange={onInputChange}
+                  />
+                </div>
+              )}
 
               <div style={{ margin: "10px 35px" }}>
                 <label
@@ -148,11 +243,22 @@ export const UpdateIncentive = (props) => {
                     cursor: "pointer",
                   }}
                 >
-                  <PermMediaIcon
+                  {/* <PermMediaIcon
                     htmlColor="tomato"
                     style={{ marginRight: "5px" }}
-                  />
-                  <span>Choose Image</span>
+                  /> */}
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <img
+                      className="img"
+                      src={
+                        state.img
+                          ? URL.createObjectURL(state.img)
+                          : IMAGE_BASE_URL + img
+                      }
+                      alt=""
+                    />
+                  </div>
+                  {/* <span>Choose Image</span> */}
                   {/* <input
                     style={{ display: "none" }}
                     type='file'
@@ -162,115 +268,126 @@ export const UpdateIncentive = (props) => {
                     name='img'
                     onChange={onInputChange}
                   /> */}
-                  <FileBase
+                  {/* <FileBase
                     type="file"
                     multiple={false}
                     onDone={({ base64 }) =>
                       setFormValue({ ...formValue, img: base64 })
                     }
+                  /> */}
+
+                  <input
+                    type="file"
+                    id="file"
+                    accept=".png,.jpeg,.jpg"
+                    name="img"
+                    onChange={uploadImage}
                   />
                 </label>
               </div>
             </div>
-            <div className="incentive-form-right">
-              <div>
-                <h3>Sponser Location</h3>
-                <div
-                  style={{
-                    width: "100% !important",
-                    height: "100vh !important",
-                  }}
-                >
-                  {/* <Map value={props.latLng} onChange={onInputChange} /> */}
-                  <div
-                    id="googleMaps"
-                    style={{ width: "50vh", height: "50vh" }}
-                  >
-                    <PlacesAutocomplete
-                      value={address}
-                      onChange={handleChange}
-                      onSelect={handleSelect}
-                    >
-                      {({
-                        getInputProps,
-                        suggestions,
-                        getSuggestionItemProps,
-                        loading,
-                      }) => (
-                        <div>
-                          <input
-                            className="map-input"
-                            {...getInputProps({
-                              placeholder: "Search Places ...",
-                              // className: "location-search-input",
-                              className: "map-input",
-                            })}
-                          />
-                          <div className="autocomplete-dropdown-container">
-                            {loading && <div>Loading...</div>}
-                            {suggestions.map((suggestion) => {
-                              const className = suggestion.active
-                                ? "suggestion-item--active"
-                                : "suggestion-item";
-                              // inline style for demonstration purpose
-                              const style = suggestion.active
-                                ? {
-                                    backgroundColor: "#fafafa",
-                                    cursor: "pointer",
-                                    // padding: "10px",
-                                  }
-                                : {
-                                    backgroundColor: "#ffffff",
-                                    cursor: "pointer",
-                                    // padding: "10px",
-                                    margin: "10px",
-                                  };
-                              return (
-                                <div
-                                  {...getSuggestionItemProps(suggestion, {
-                                    className,
-                                    style,
-                                  })}
-                                >
-                                  <span>{suggestion.description}</span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </PlacesAutocomplete>
 
-                    <Map
-                      google={props.google}
-                      initialCenter={{
-                        lat: laat,
-                        lng: lang,
-                      }}
-                      center={{
-                        // mapCenter.lat
-                        // ()
-                        lat: laat,
-                        lng: lang,
-                      }}
-                      zoom={14}
-                      containerStyle={{ height: "50vh", width: "inherit" }}
+            {data?.type === 2 && (
+              <div className="incentive-form-right">
+                <div>
+                  <h3>Sponser Location</h3>
+                  <div
+                    style={{
+                      width: "100% !important",
+                      height: "100vh !important",
+                    }}
+                  >
+                    {/* <Map value={props.latLng} onChange={onInputChange} /> */}
+                    <div
+                      id="googleMaps"
+                      style={{ width: "50vh", height: "50vh" }}
                     >
-                      <Marker
-                        position={{
+                      <PlacesAutocomplete
+                        value={address}
+                        onChange={handleChange}
+                        onSelect={handleSelect}
+                      >
+                        {({
+                          getInputProps,
+                          suggestions,
+                          getSuggestionItemProps,
+                          loading,
+                        }) => (
+                          <div>
+                            <input
+                              className="map-input"
+                              {...getInputProps({
+                                placeholder: "Search Places ...",
+                                // className: "location-search-input",
+                                className: "map-input",
+                              })}
+                            />
+                            <div className="autocomplete-dropdown-container">
+                              {loading && <div>Loading...</div>}
+                              {suggestions.map((suggestion) => {
+                                const className = suggestion.active
+                                  ? "suggestion-item--active"
+                                  : "suggestion-item";
+                                // inline style for demonstration purpose
+                                const style = suggestion.active
+                                  ? {
+                                      backgroundColor: "#fafafa",
+                                      cursor: "pointer",
+                                      // padding: "10px",
+                                    }
+                                  : {
+                                      backgroundColor: "#ffffff",
+                                      cursor: "pointer",
+                                      // padding: "10px",
+                                      margin: "10px",
+                                    };
+                                return (
+                                  <div
+                                    {...getSuggestionItemProps(suggestion, {
+                                      className,
+                                      style,
+                                    })}
+                                  >
+                                    <span>{suggestion.description}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </PlacesAutocomplete>
+
+                      <Map
+                        google={props.google}
+                        initialCenter={{
                           lat: laat,
                           lng: lang,
                         }}
-                        // draggable={{
-                        //   lat: laat,
-                        //   lng: lang,
-                        // }}
-                      />
-                    </Map>
+                        center={{
+                          // mapCenter.lat
+                          // ()
+                          lat: laat,
+                          lng: lang,
+                        }}
+                        zoom={14}
+                        containerStyle={{ height: "50vh", width: "inherit" }}
+                      >
+                        <Marker
+                          position={{
+                            lat: laat,
+                            lng: lang,
+                          }}
+                          // draggable={{
+                          //   lat: laat,
+                          //   lng: lang,
+                          // }}
+                        />
+                      </Map>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
           <button className="incentive-button">Update</button>
         </form>
