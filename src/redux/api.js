@@ -53,7 +53,7 @@ export const incentiveList = () => API.get("/api/insentive_list");
 export const createIncentive = (formData) => {
   return axios({
     method: "post",
-    url: "https://cenntrum.codecoyapps.com/api/add_insentive",
+    url: "https://wh717090.ispot.cc/cenntrum_live/api/add_insentive",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });

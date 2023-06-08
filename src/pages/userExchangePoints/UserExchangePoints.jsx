@@ -72,8 +72,14 @@ const UserExchangePoints = () => {
     <div className="users">
       <div className="users-heading">Exchanged</div>
       <div>
-        <h2>Name :{users.name}</h2>
-        <h2>Email :{users.email}</h2>
+        <h2>
+          Name : &nbsp;
+          {location.state.row.firstname + " " + location.state.row.lastname}
+        </h2>
+        <h2>
+          Email :&nbsp;
+          {location.state.row.email}
+        </h2>
       </div>
       {/* 1175 */}
       {loading ? (

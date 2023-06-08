@@ -166,7 +166,10 @@ const Users = () => {
               <p>{params.row.total_points}</p>
               {/* </div>
               <div> */}
-              <Link to={"/accumulatedPoints/" + params.row.id}>
+              <Link
+                to={"/accumulatedPoints/" + params.row.id}
+                state={{ row: params.row }}
+              >
                 <button className="users-list-view">View</button>
               </Link>
               {/* </div> */}
@@ -191,7 +194,10 @@ const Users = () => {
               }}
             >
               <p>{params.row.exchange_points}</p>
-              <Link to={"/userExchangePoints/" + params.row.id}>
+              <Link
+                to={"/userExchangePoints/" + params.row.id}
+                state={{ row: params.row }}
+              >
                 <button className="users-list-view">View</button>
               </Link>
             </div>
@@ -214,7 +220,10 @@ const Users = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Link to={"/userRewards/" + params.row.id}>
+              <Link
+                to={"/userRewards/" + params.row.id}
+                state={{ row: params.row }}
+              >
                 <button className="users-list-view">View</button>
               </Link>
             </div>
