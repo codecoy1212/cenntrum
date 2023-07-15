@@ -1,11 +1,17 @@
-.crypto{
+.flex{
+    display: flex;
+}
+.incentive-select{
+    width: 66% !important;
+}
+.incentive{
     margin: auto;
     width: 90%;
     margin-top: 40px;
     margin-bottom: 40px;
 
 }
-.crypto-top{
+.incentive-top{
     display: flex;
     justify-content: center;
     margin: auto;
@@ -17,38 +23,43 @@
     color: white;
     width: 160px;
 }
-.crypto-form-wrapper{
+.incentive-form{
+    margin-left: 20%;
+}
+.incentive-form-wrapper{
     
     display: flex;
 }
-.crypto-form-container{
+.incentive-form-container{
     margin: auto;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    width: 80%;
+    width: 100%;
+
+    
     /* margin-left: 15% !important; */
     display: flex;
-    justify-content: center;
-    /* flex-wrap: wrap; */
+    /* justify-content: space-between !important; */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
-.crypto-form-left{
+.incentive-form-left{
     width: 50%;
 }
-/* .crypto-form-right{
+.incentive-form-right{
     width: 50%;
-} */
-.crypto-input{
+}
+.incentive-input{
     outline: none;
     border: 1px solid  rgba(120,109,109,0.97);
     border-radius: 8px;
     /* box-shadow: 1px 2px grey; */
     flex: 1;
   /* min-width: 40%; */
-  width: 260px;
+  width: 70%;
   margin: 10px 35px;
   padding: 20px;
 }
-.crypto-button{
+.incentive-button{
     display: flex;
     justify-content: center;
     margin: auto;
@@ -59,18 +70,35 @@
     border-radius: 20px;
     color: white;
     width: 160px;
+    cursor: pointer;
+}
+
+.map-input{
+    outline: none;
+    border: 1px solid  rgba(120,109,109,0.97);
+    border-radius: 8px;
+    /* box-shadow: 1px 2px grey; */
+    /* box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97);
+-webkit-box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97);
+-moz-box-shadow: 12px 10px 33px -15px rgba(120,109,109,0.97); */
+    /* flex: 1; */
+  /* min-width: 40%; */
+  width: 45vh;
+  margin: 10px;
+  padding: 10px;
 }
 
 @media screen and (max-width: 480px) {
-    .crypto-form-container{
+    .incentive-form-container{
         width: unset;
         margin-left: unset;
         justify-content: unset;
+        flex-direction: column;
     }
-    .crypto-button{
+    .incentive-button{
         margin-top: 70px;
     }
-    .crypto-form-right{
+    .incentive-form-right{
         margin-top: 20px;
     }
     }

@@ -28,12 +28,12 @@ const CoinPkg = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 130 },
-    { field: "coins", headerName: "Coins", width: 180 },
+    { field: "coins", headerName: "Points", width: 180 },
 
     { field: "title", headerName: "Type", width: 130 },
     {
       field: "price",
-      headerName: "Price",
+      headerName: "Price ($)",
       width: 130,
     },
 
@@ -59,7 +59,8 @@ const CoinPkg = () => {
 
   return (
     <div className="coin">
-      <div className="coin-heading">Coin Packages</div>
+      {/* <div className="coin-heading">Coin Packages</div> */}
+      <div className="coin-heading">Buy Points</div>
       {/* <div style={{ width: "150px" }}>
         <Link to="/addNewcoinPackage">
           <div className="coin-add">Add New Package</div>

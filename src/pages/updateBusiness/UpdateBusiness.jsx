@@ -2,8 +2,11 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createBusiness } from "../../redux/features/businessSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  createBusiness,
+  updateBusiness,
+} from "../../redux/features/businessSlice";
 import FileBase from "react-file-base64";
 import "./createBusiness.css";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
@@ -15,18 +18,6 @@ import axios from "../../axios";
 
 import { useEffect, useState } from "react";
 
-const initialState = {
-  name: "",
-  phone: "",
-  email: "",
-  username: "",
-  description: "",
-  password: "",
-  laat: 31.4689545,
-  lang: 74.26450799999999,
-  locationStatus: false,
-  status: 0,
-};
 const initialMapState = {
   address: "",
   showingInfoWindow: false,
@@ -40,10 +31,26 @@ const initialMapState = {
   lng: 74.26450799,
   mapCenter: "",
   divStatus: 1,
-  status: 0,
 };
 
 export const CreateBusiness = (props) => {
+  const location = useLocation();
+  const row = location.state?.row;
+
+  const initialState = {
+    business_id: row.id,
+    name: row.name,
+    phone: row.phone,
+    email: row.email,
+    username: row.username,
+    description: row.description,
+    password: row.password,
+    laat: row?.laat,
+    lang: row?.lang,
+    locationStatus: row?.laat ? true : false,
+    status: row.status,
+  };
+
   const [state, setState] = useState(initialMapState);
   const [formValue, setFormValue] = useState(initialState);
   const { loading, error } = useSelector((state) => ({
@@ -79,9 +86,9 @@ export const CreateBusiness = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValue);
+
     if (name && username && password) {
-      dispatch(createBusiness({ formValue, navigate }));
+      dispatch(updateBusiness({ formValue, navigate }));
     }
   };
 
@@ -139,7 +146,7 @@ export const CreateBusiness = (props) => {
 
   return (
     <div className="incentive">
-      <div className="incentive-top">Create Business</div>
+      <div className="incentive-top">Update Business</div>
       <div className="incentive-form-wrapper">
         <form className="incentive-form" onSubmit={handleSubmit}>
           <div className="incentive-form-container">
@@ -172,6 +179,7 @@ export const CreateBusiness = (props) => {
                   <label>Email</label>
                   <input
                     type="text"
+                    disabled
                     className="incentive-input"
                     placeholder="Enter Email"
                     value={email}
@@ -210,12 +218,14 @@ export const CreateBusiness = (props) => {
                     onChange={onInputChange}
                   ></textarea>
                 </div>
+
                 <div>
                   <label>Set As Global</label>
                   &nbsp;&nbsp;
                   <input
                     type="checkbox"
                     className=""
+                    defaultChecked={status ? true : false}
                     value={status}
                     name="status"
                     onChange={onInputChange}
@@ -337,7 +347,9 @@ export const CreateBusiness = (props) => {
               )}
             </div>
           </div>
-          <button className="incentive-button">Create</button>
+          <div className="incentive-form-bottom">
+            <button className="incentive-button">Update</button>
+          </div>
         </form>
       </div>
     </div>

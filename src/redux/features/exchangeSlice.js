@@ -15,9 +15,21 @@ export const exchangeList = createAsyncThunk(
 
 export const searchExchange = createAsyncThunk(
   "exchangePoint/searchExchange",
-  async ({ from, to }, { rejectWithValue }) => {
+  async ({ from, to, type }, { rejectWithValue }) => {
     try {
-      const response = await api.searchExchange({ from, to });
+      const response = await api.searchExchange({ from, to, type });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const filterExchange = createAsyncThunk(
+  "exchangePoint/searchExchange",
+  async ({ from, to, type }, { rejectWithValue }) => {
+    try {
+      const response = await api.filterExchange({ from, to, type });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);

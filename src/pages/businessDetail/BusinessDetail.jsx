@@ -16,6 +16,7 @@ const BusinessDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const row = location.state.row;
   const userId = location.pathname.split("/")[2];
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this Business?")) {
@@ -135,6 +136,16 @@ const BusinessDetail = () => {
   return (
     <div className="incentive">
       <div className="incentive-heading">Business Detail</div>
+      <div>
+        <h2>
+          Name : &nbsp;
+          {location.state.row.name}
+        </h2>
+        <h2>
+          Email :&nbsp;
+          {location.state.row.email}
+        </h2>
+      </div>
       {loading ? (
         <p>Loading...</p>
       ) : (

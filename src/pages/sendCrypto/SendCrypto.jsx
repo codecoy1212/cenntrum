@@ -1,38 +1,60 @@
 import React, { useState } from "react";
 import "./sendCrypto.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { sendCrypto } from "../../redux/features/cryptoSlice";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
-const initialState = {
-  type: "2",
-  email: "",
-  exchange: "",
-  points: "",
-  date: "",
-  subject: "",
-  wallet: "",
-  desc: "",
-};
+import moment from "moment";
 
 const SendCrypto = () => {
+  const location = useLocation();
+  const row = location.state?.row;
+
+  const initialState = {
+    exchange_id: row?.id ?? "",
+    type: "2",
+    crypto_name: row?.inc_name ?? "",
+    email: row?.email ?? "",
+    quantity_to_be_sent: row?.crpto_quantity ?? "",
+    exchange: row?.points ?? "",
+    points: row?.points ?? "",
+    date_of_exchange_: row?.date_time
+      ? moment(row.date_time).format("DD-MM-YYYY")
+      : "",
+    time_of_exchange: row?.date_time ? moment(row.date_time).format("LTS") : "",
+    subject: "",
+    wallet_address: row?.address ?? "",
+    desc: "",
+  };
+
   const [formValue, setFormValue] = useState(initialState);
 
   const { loading, error } = useSelector((state) => ({
     ...state.crypto,
   }));
-  const { email, exchange, points, date, subject, wallet, desc } = formValue;
+  const {
+    email,
+    crypto_name,
+    quantity_to_be_sent,
+    exchange,
+    points,
+    date_of_exchange_,
+    time_of_exchange,
+    subject,
+    wallet_address,
+    desc,
+  } = formValue;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (email && exchange && points && date && subject && desc) {
-    dispatch(sendCrypto({ formValue, navigate }));
-    // }
+    console.log(formValue);
+    if (email && exchange && points && date_of_exchange_) {
+      dispatch(sendCrypto({ formValue, navigate }));
+    }
   };
   const onInputChange = (e) => {
     let { name, value } = e.target;
@@ -45,59 +67,98 @@ const SendCrypto = () => {
   return (
     <div className="crypto">
       <div className="crypto-top">Send Crypto Assets</div>
-      <div className="crypto-form-wrapper">
+      <div
+        className="crypto-form-wrapper"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <form className="crypto-form" onSubmit={handleSubmit}>
           <div className="crypto-form-container">
-            <div className="crypto-form-left">
-              <input
-                type="text"
-                className="crypto-input"
-                placeholder="User Email"
-                value={email}
-                name="email"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="crypto-input"
-                placeholder="Exchange N°"
-                value={exchange}
-                name="exchange"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="crypto-input"
-                placeholder="Points"
-                value={points}
-                name="points"
-                onChange={onInputChange}
-              />
-              <input
-                type="text"
-                className="crypto-input"
-                placeholder="Date and Time"
-                value={date}
-                name="date"
-                onChange={onInputChange}
-              />
-              <input
+            <div className="crypto-form-lef">
+              <div>
+                <label>User Email</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="User Email"
+                  value={email}
+                  name="email"
+                  onChange={onInputChange}
+                />
+              </div>
+              <div>
+                <label>Cypto Name</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="Crypto Name"
+                  value={crypto_name}
+                  name="crypto_name"
+                  onChange={onInputChange}
+                />
+              </div>
+              <div>
+                <label>Value Of Incentive</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="Value Of Incentive"
+                  value={quantity_to_be_sent}
+                  name="quantity_to_be_sent"
+                  onChange={onInputChange}
+                />
+              </div>
+              <div>
+                <label>Exchanged Points</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="Exchanged Points"
+                  value={points}
+                  name="points"
+                  onChange={onInputChange}
+                />
+              </div>
+              <div>
+                <label>Date Of Exchange</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="Date Of Exchange"
+                  value={date_of_exchange_}
+                  name="date_of_exchange_"
+                  onChange={onInputChange}
+                />
+              </div>
+              <div>
+                <label>Time Of Exchange</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="Time Of Exchange"
+                  value={time_of_exchange}
+                  name="time_of_exchange"
+                  onChange={onInputChange}
+                />
+              </div>
+              {/* <input
                 type="text"
                 className="crypto-input"
                 placeholder="Subject"
                 value={subject}
                 name="subject"
                 onChange={onInputChange}
-              />
-
-              <input
-                type="text"
-                className="crypto-input"
-                placeholder="Wallet Address"
-                value={wallet}
-                name="wallet"
-                onChange={onInputChange}
-              />
+              /> */}
+              <div>
+                <label>User Wallet Address</label>
+                <input
+                  type="text"
+                  className="crypto-input"
+                  placeholder="User Wallet Address"
+                  value={wallet_address}
+                  name="wallet_address"
+                  onChange={onInputChange}
+                />
+              </div>
 
               {/* <div style={{ margin: "10px 35px" }}>
                 <label
@@ -110,7 +171,7 @@ const SendCrypto = () => {
                 ></label>
               </div> */}
             </div>
-            <div className="crypto-form-right">
+            {/* <div className="crypto-form-right">
               <div>
                 <ReactQuill
                   theme="snow"
@@ -119,7 +180,7 @@ const SendCrypto = () => {
                   // style={{ minHeight: "100px" }}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <button className="crypto-button">Send</button>
         </form>

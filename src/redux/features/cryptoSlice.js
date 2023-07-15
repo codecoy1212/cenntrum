@@ -6,7 +6,7 @@ export const sendCrypto = createAsyncThunk(
   async ({ formValue, navigate }, { rejectWithValue }) => {
     try {
       const response = await api.sendCrypto(formValue);
-      navigate("/menu");
+      navigate("/exchangedPoints");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);

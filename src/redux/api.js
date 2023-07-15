@@ -73,9 +73,11 @@ export const searchEarned = ({ from, to }) =>
 
 // exchange slice
 
-export const exchangeList = () => API.get("/api/exchange_points");
-export const searchExchange = ({ from, to }) =>
-  API.get(`/api/exchange_points?from=${from}&to=${to}`);
+export const exchangeList = () => API.get("/api/exchange_points?type=2");
+export const searchExchange = ({ from, to, type }) =>
+  API.get(`/api/exchange_points?from=${from}&to=${to}&type=${type}`);
+export const filterExchange = ({ from, to, type }) =>
+  API.get(`/api/filter_exchange_points?from=${from}&to=${to}&type=${type}`);
 
 // App Setting Slice
 
@@ -95,7 +97,13 @@ export const sendCrypto = (formData) => API.post("/api/send_mail", formData);
 // user points
 export const accumulatedPoints = (userId) =>
   API.post(`/api/my_points?user_id=${userId}`);
-export const points = (userId) => API.get(`/api/my_rewards?user_id=${userId}`);
+// export const points = (userId) => API.get(`/api/my_rewards?user_id=${userId}`);
+export const points = (userId, type) =>
+  API.get(`/api/exchange_points_user?user_id=${userId}&type=${type}`);
+export const filterPoints = (from, to, userId, type) =>
+  API.get(
+    `/api/filter_exchange_points_user?from=${from}&to=${to}&user_id=${userId}&type=${type}`
+  );
 
 // business
 
@@ -104,4 +112,6 @@ export const createBusiness = (formData) =>
 
 export const businessList = () => API.get("/api/business_list");
 export const businessDetail = (id) => API.get(`/api/business_detail/${id}`);
+export const updateBusiness = (data) =>
+  API.post(`/api/update_business_details`, data);
 export const deleteBusiness = (id) => API.get(`/api/delete_business/${id}`);

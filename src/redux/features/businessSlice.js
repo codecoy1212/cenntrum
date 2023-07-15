@@ -39,18 +39,18 @@ export const businessDetail = createAsyncThunk(
   }
 );
 
-// export const updateIncentive = createAsyncThunk(
-//   "incentive/updateIncentive",
-//   async ({ id, formValue, navigate }, { rejectWithValue }) => {
-//     try {
-//       const response = await api.updateIncentive(formValue, id);
-//       navigate("/incentives");
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
+export const updateBusiness = createAsyncThunk(
+  "incentive/updateBusiness",
+  async ({ id, formValue, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateBusiness(formValue);
+      navigate("/businessList");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 export const deleteBusiness = createAsyncThunk(
   "business/deleteBusiness",

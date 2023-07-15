@@ -51,7 +51,8 @@ const Menu = () => {
           <Link to="/exchangedPoints">
             <div className="menu-link">
               <img src={point} alt="" />
-              Exchange Points
+              {/* Exchange Points */}
+              Exchanged Points
             </div>
           </Link>
         </div>
@@ -59,7 +60,7 @@ const Menu = () => {
           <Link to="/createIncentive">
             <div className="menu-link">
               <img src={incentive} alt="" />
-              Create Incentives
+              Create Incentive
             </div>
           </Link>
         </div>
@@ -67,7 +68,7 @@ const Menu = () => {
           <Link to="/incentives">
             <div className="menu-link">
               <img src={incentive} alt="" />
-              Incentives
+              Incentives List
             </div>
           </Link>
         </div>
@@ -79,7 +80,7 @@ const Menu = () => {
             </div>
           </Link>
         </div> */}
-        <div className="menu-item">
+        {/* <div className="menu-item">
           <Link to="/sendCrypto">
             <div className="menu-link">
               <img src={crypto} alt="" />
@@ -91,7 +92,7 @@ const Menu = () => {
           <Link to="/coinPackages">
             <div className="menu-link">
               <img src={point} alt="" />
-              Coin Packages
+              Point Packages
             </div>
           </Link>
         </div>
@@ -99,16 +100,16 @@ const Menu = () => {
           <Link to="/addSubscription">
             <div className="menu-link">
               <img src={point} alt="" />
-              Add Subscriptions
+              Subscriptions Packages
             </div>
           </Link>
-        </div>
-       
+        </div> */}
+
         <div className="menu-item">
           <Link to="/businessList">
             <div className="menu-link">
               <img src={point} alt="" />
-              Business List
+              Businesses List
             </div>
           </Link>
         </div>

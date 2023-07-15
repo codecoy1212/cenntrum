@@ -36,9 +36,22 @@ export const accumulatedPoints = createAsyncThunk(
 
 export const points = createAsyncThunk(
   "user/points",
-  async (userId, { rejectWithValue }) => {
+  async ({ userId, type }, { rejectWithValue }) => {
     try {
-      const response = await api.points(userId);
+      const response = await api.points(userId, type);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const filterPoints = createAsyncThunk(
+  "user/points",
+  async ({ from, to, userId, type }, { rejectWithValue }) => {
+    try {
+      const response = await api.filterPoints(from, to, userId, type);
+
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);

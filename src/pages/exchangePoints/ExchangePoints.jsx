@@ -6,13 +6,25 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   exchangeList,
   searchExchange,
+  filterExchange,
 } from "../../redux/features/exchangeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Tooltip,
+} from "@mui/material";
+import { Cancel, Search } from "@mui/icons-material";
 
 const ExchangePoints = () => {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState("2023-01-01");
+  const [to, setTo] = useState(new Date().toISOString().slice(0, 10));
+  const [type, setType] = useState(2);
 
   const { exchangePoints, searchExchangePoints, loading, error } = useSelector(
     (state) => ({
@@ -27,11 +39,22 @@ const ExchangePoints = () => {
   //   dispatch(exchangeList());
   // }, []);
 
+  const filter = (event, value) => {
+    setType(value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (from && to) {
-      dispatch(searchExchange({ from, to }));
-      navigate(`/exchangePoints/search?from=${from}&to=${to}`);
+      dispatch(
+        filterExchange({
+          from: new Date(from).getTime(),
+          to: new Date(to).getTime(),
+          type,
+        })
+      );
+      // navigate(`/exchangePoints/search?from=${from}&to=${to}`);
       // setFrom("");
       // setTo("");
     } else {
@@ -39,28 +62,29 @@ const ExchangePoints = () => {
     }
   };
   useEffect(() => {
-    dispatch(searchExchange({ from, to }));
-  }, [from, to]);
+    dispatch(searchExchange({ from, to, type }));
+  }, [type]);
 
   // const [data, setData] = useState(rows);
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
   // };
 
-  const columns = [
-    { field: "id", headerName: "ID Number", width: 100 },
-    { field: "email", headerName: "User ID", width: 180 },
+  const cryptoColumns = [
+    { field: "id", headerName: "Exchanged ID", width: 130 },
+    { field: "email", headerName: "Email", width: 180 },
 
     // { field: "exchangeNumber", headerName: "Exchange Number", width: 160 },
     { field: "points", headerName: "Exchanged Points", width: 160 },
+    { field: "crpto_quantity", headerName: "Value Of Incentive", width: 160 },
     {
-      field: "date",
-      headerName: "Date",
+      field: "date_time",
+      headerName: "Exchanged Date",
       // type: "number",
-      width: 130,
+      width: 150,
       renderCell: (params) => {
         var date = new Date(params.row.date_time);
-        // console.log(params);
+
         return (
           <>
             {moment(date).format("DD-MM-YYYY")}
@@ -70,11 +94,11 @@ const ExchangePoints = () => {
       },
     },
     {
-      field: "date_time",
-      headerName: "Time",
-      width: 130,
+      field: "time",
+      headerName: "Exchanged Time",
+      width: 150,
       renderCell: (params) => {
-        var date = new Date(params.value);
+        var date = new Date(params.row.date_time);
         return (
           <>
             {moment(date).format("LTS")}
@@ -89,8 +113,34 @@ const ExchangePoints = () => {
     },
     {
       field: "inc_name",
-      headerName: "Incentives",
+      headerName: "Incentive Name",
       width: 190,
+    },
+    {
+      field: "buying_status",
+      headerName: "Status",
+      width: 190,
+      renderCell: (params) => {
+        return <>{params.row.buying_status === 0 ? "pending" : "sent"}</>;
+      },
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          params.row.buying_status === 0 && (
+            <Link
+              to="/sendCrypto"
+              state={{ row: params.row }}
+              className="coin-list-edit"
+            >
+              Send
+            </Link>
+          )
+        );
+      },
     },
     // {
     //   field: "action",
@@ -112,11 +162,49 @@ const ExchangePoints = () => {
     // },
   ];
 
-  // console.log();
+  const giftColumns = [
+    { field: "id", headerName: "Exchanged ID", width: 130 },
+    { field: "email", headerName: "Email", width: 180 },
+
+    {
+      field: "redeemed_date",
+      headerName: "Exchanged Date",
+      width: 150,
+      renderCell: (params) => {
+        var date = new Date(params.row.redeemed_date);
+        return <>{moment(date).format("DD-MM-YYYY")}</>;
+      },
+    },
+    {
+      field: "time",
+      headerName: "Exchanged Time",
+      width: 150,
+      renderCell: (params) => {
+        var date = new Date(params.row.redeemed_date);
+        return <>{moment(date).format("LTS")}</>;
+      },
+    },
+    {
+      field: "inc_name",
+      headerName: "Incentive Name",
+      width: 190,
+    },
+    {
+      field: "giftcode",
+      headerName: "Gift Code",
+      width: 190,
+    },
+    {
+      field: "name",
+      headerName: "Business Name",
+      width: 190,
+    },
+  ];
 
   return (
     <div className="exchange">
       {/* <div className="exchange-top"> */}
+
       <form className="exchange-top" onSubmit={handleSubmit}>
         <div>
           From
@@ -143,8 +231,25 @@ const ExchangePoints = () => {
             />
           </div>
         </div>
+        <Button type="submit" style={{ marginTop: 15 }}>
+          <Tooltip title="filter">
+            <Search />
+          </Tooltip>
+        </Button>
       </form>
-
+      <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">Filter</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+          onChange={filter}
+          value={type}
+        >
+          <FormControlLabel value={1} control={<Radio />} label="gift" />
+          <FormControlLabel value={2} control={<Radio />} label="crypto" />
+        </RadioGroup>
+      </FormControl>
       {/* </div> */}
       {loading ? (
         <p>Loading....</p>
@@ -152,7 +257,7 @@ const ExchangePoints = () => {
         <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
           <DataGrid
             rows={searchExchangePoints}
-            columns={columns}
+            columns={type == 1 ? giftColumns : cryptoColumns}
             pageSize={50}
             rowsPerPageOptions={[50]}
           />

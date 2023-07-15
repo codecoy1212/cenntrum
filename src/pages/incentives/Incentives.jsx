@@ -52,7 +52,6 @@ const Incentives = () => {
       renderCell: (params) => {
         return (
           <>
-            {console.log(IMAGE_BASE_URL + params.row.img)}
             <div style={{ display: "flex", flexDirection: "column" }}>
               <img
                 className="img"

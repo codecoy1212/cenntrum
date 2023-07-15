@@ -27,7 +27,13 @@ const AppSetting = () => {
   const { loading, error } = useSelector((state) => ({
     ...state.AppSetting,
   }));
-  const { default_coins, default_time,business_radius,earning_poin_time,earning_point_driving } = formValue;
+  const {
+    default_coins,
+    default_time,
+    business_radius,
+    earning_poin_time,
+    earning_point_driving,
+  } = formValue;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +62,8 @@ const AppSetting = () => {
           {/* <div className="appSetting-form-container"> */}
           {/* <div className="appSetting-form-left"> */}
           <div>
-            <label>Default Coins</label>
+            {/* <label>Default Coins</label> */}
+            <label>Default Points</label>
             <input
               type="text"
               className="appSetting-input"
@@ -67,7 +74,8 @@ const AppSetting = () => {
             />
           </div>
           <div>
-            <label>Default Time </label>
+            {/* <label>Default Time </label> */}
+            <label>Default Time (Seg)</label>
             <input
               type="text"
               className="appSetting-input"
@@ -79,9 +87,11 @@ const AppSetting = () => {
           </div>
 
           <div>
+            {/* <label>Default Radius for Business</label> */}
             <label>
-              Default Radius for Business
-              </label>
+              Default Radius
+              <br /> for Business (Km)
+            </label>
             <input
               type="text"
               className="appSetting-input2"
@@ -93,7 +103,11 @@ const AppSetting = () => {
           </div>
 
           <div>
-            <label>Max Time for Earning Points</label>
+            {/* <label>Max Time for Earning Points</label> */}
+            <label>
+              Max Time <br />
+              for Earning Points (Seg)
+            </label>
             <input
               type="text"
               className="appSetting-input2"
@@ -105,7 +119,8 @@ const AppSetting = () => {
           </div>
 
           <div>
-            <label>Max Time for Earning Points For Driving</label>
+            {/* <label>Max Time for Earning Points For Driving</label> */}
+            <label>Max Time for Earning Points for Driving (Seg)</label>
             <input
               type="text"
               className="appSetting-input3"

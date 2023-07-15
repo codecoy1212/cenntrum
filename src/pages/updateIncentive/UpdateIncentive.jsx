@@ -172,11 +172,11 @@ export const UpdateIncentive = (props) => {
                 /> */}
                 {data?.type == 2 && (
                   <div>
-                    <label>Quantity of crypto</label>
+                    <label>Quantity Of Incentive</label>
                     <input
                       type="number"
                       className="incentive-input"
-                      placeholder="Enter Quantity Of Crypto"
+                      placeholder="Enter Quantity Of Incentive"
                       value={value}
                       name="value"
                       onChange={onInputChange}
@@ -184,11 +184,11 @@ export const UpdateIncentive = (props) => {
                   </div>
                 )}
                 <div style={style}>
-                  <label>Quantity</label>
+                  <label>Value Of Incentive</label>
                   <input
                     type="text"
                     className="incentive-input"
-                    placeholder="Enter Number Of Incentive"
+                    placeholder="Enter Value Of Incentive"
                     value={quantity}
                     name="quantity"
                     onChange={onInputChange}
@@ -290,7 +290,7 @@ export const UpdateIncentive = (props) => {
             {data?.type === 2 && (
               <div className="incentive-form-right">
                 <div>
-                  <h3>Sponser Location</h3>
+                  <h3>Sponsor Location</h3>
                   <div
                     style={{
                       width: "100% !important",
@@ -389,7 +389,10 @@ export const UpdateIncentive = (props) => {
               </div>
             )}
           </div>
-          <button className="incentive-button">Update</button>
+          <div className="incentive-form-bottom">
+            {/* <button className="incentive-button">Create</button> */}
+            <button className="incentive-button">Update</button>
+          </div>
         </form>
       </div>
     </div>

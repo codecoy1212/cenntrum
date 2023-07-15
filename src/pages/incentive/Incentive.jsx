@@ -111,7 +111,7 @@ export const Incentive = (props) => {
     Object.keys(formValue).forEach(function (key) {
       formData.append(key, formValue[key]);
     });
-    
+
     // console.log(formValue);
     if (name && value && quantity && req_point) {
       dispatch(createIncentive({ formValue, navigate }));
@@ -191,7 +191,7 @@ export const Incentive = (props) => {
 
   return (
     <div className="incentive">
-      <div className="incentive-top">Create Incentives</div>
+      <div className="incentive-top">Create Incentive</div>
       <div className="incentive-form-wrapper">
         <form className="incentive-form" onSubmit={handleSubmit}>
           <div className="incentive-form-container">
@@ -285,11 +285,11 @@ export const Incentive = (props) => {
                 </div>
                 {divStatus == 2 && (
                   <div>
-                    <label>Quantity of crypto</label>
+                    <label>Quantity Of Incentive</label>
                     <input
                       type="number"
                       className="incentive-input"
-                      placeholder="Enter Quantity Of Crypto"
+                      placeholder="Enter Quantity Of Incentive"
                       value={value}
                       name="value"
                       onChange={onInputChange}
@@ -297,11 +297,11 @@ export const Incentive = (props) => {
                   </div>
                 )}
                 <div>
-                  <label>Quantity</label>
+                  <label>Value Of Incentive</label>
                   <input
                     type="number"
                     className="incentive-input"
-                    placeholder="Enter Number Of Incentive"
+                    placeholder="Enter Value Of Incentive"
                     value={quantity}
                     name="quantity"
                     onChange={onInputChange}
@@ -335,7 +335,7 @@ export const Incentive = (props) => {
 
                 {locationStatus && divStatus == 2 && (
                   <div>
-                    <label>Max Distance</label>
+                    <label>Max Distance (km)</label>
                     <input
                       type="text"
                       className="incentive-input"
@@ -385,7 +385,8 @@ export const Incentive = (props) => {
             <div className="incentive-form-right">
               {divStatus == 2 && (
                 <h3 className="flex">
-                  Sponser Location
+                  Please select a location <br />
+                  where this incentive will be offered
                   <input
                     type="checkbox"
                     className="incentive-input"

@@ -10,93 +10,98 @@ import {
 } from "../../redux/features/businessSlice";
 
 const BusinessList = () => {
+  const { businesses, loading, error } = useSelector((state) => ({
+    ...state.business,
+  }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const { businesses, loading, error } = useSelector((state) => ({
-        ...state.business,
-      }));
-      const dispatch = useDispatch();
-      const navigate = useNavigate();
-    
-      const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this Business?")) {
-          dispatch(deleteBusiness(id));
-          window.location.reload();
-        }
-      };
-    
-      useEffect(() => {
-        dispatch(businessList());
-      }, []);
-    
-      const columns = [
-        { field: "id", headerName: "ID Number", width: 100 },
-        { field: "name", headerName: "Name", width: 130 },
-        // {
-        //   field: "img",
-        //   headerName: "Image",
-        //   width: 80,
-        //   // renderCell: (params) => {
-        //   //   return (
-        //   //     <>
-        //   //       <div style={{ display: "flex", flexDirection: "column" }}>
-        //   //         <img className="img" src={params.row.img} alt="" />
-        //   //       </div>
-        //   //     </>
-        //   //   );
-        //   // },
-        // },
-        { field: "phone", headerName: "Phone", width: 150 },
-        { field: "email", headerName: "Email", width: 200 },
-        { field: "username", headerName: "Username", width: 100 },
-        { field: "password", headerName: "Password", width: 200 },
-        { field: "description", headerName: "Description", width: 250 },
-        // {a
-        //   field: "quantity",
-        //   headerName: "Quantity",
-        //   width: 110,
-        // },
-        // { field: "req_point", headerName: "Required Points", width: 150 },
-        // {
-        //   field: "description",
-        //   headerName: "Location",
-        //   width: 170,
-        //   height:340,
-        //   renderCell: (params) => {
-        //     return (
-        //       <>
-        //         <div style={{ display: "flex", flexDirection: "column" }}>
-        //           <p>{params.row.description}</p>
-        //         </div>
-        //       </>
-        //     );
-        //   },
-        // },
-        // { field: "lat", headerName: "Lat", width: 130 },
-        // { field: "lng", headerName: "Lng", width: 130 },
-        // { field: "radius", headerName: "Radius", width: 110 },
-        {
-          field: "action",
-          headerName: "Action",
-          width: 150,
-          renderCell: (params) => {
-            return (
-              <>
-                <Link to={"/BusinessDetail/" + params.row.id}>
-                  <button className="incentive-list-edit">Details</button>
-                </Link>
-                <DeleteOutlineOutlinedIcon
-                  className="incentive-list-delete"
-                  onClick={() => handleDelete(params.row.id)}
-                />
-              </>
-            );
-          },
-        },
-      ];
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this Business?")) {
+      dispatch(deleteBusiness(id));
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    dispatch(businessList());
+  }, []);
+
+  const columns = [
+    { field: "id", headerName: "ID Number", width: 100 },
+    { field: "name", headerName: "Name", width: 130 },
+    // {
+    //   field: "img",
+    //   headerName: "Image",
+    //   width: 80,
+    //   // renderCell: (params) => {
+    //   //   return (
+    //   //     <>
+    //   //       <div style={{ display: "flex", flexDirection: "column" }}>
+    //   //         <img className="img" src={params.row.img} alt="" />
+    //   //       </div>
+    //   //     </>
+    //   //   );
+    //   // },
+    // },
+    { field: "phone", headerName: "Phone", width: 150 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "username", headerName: "Username", width: 100 },
+    { field: "password", headerName: "Password", width: 200 },
+    { field: "description", headerName: "Description", width: 250 },
+    // {a
+    //   field: "quantity",
+    //   headerName: "Quantity",
+    //   width: 110,
+    // },
+    // { field: "req_point", headerName: "Required Points", width: 150 },
+    // {
+    //   field: "description",
+    //   headerName: "Location",
+    //   width: 170,
+    //   height:340,
+    //   renderCell: (params) => {
+    //     return (
+    //       <>
+    //         <div style={{ display: "flex", flexDirection: "column" }}>
+    //           <p>{params.row.description}</p>
+    //         </div>
+    //       </>
+    //     );
+    //   },
+    // },
+    // { field: "lat", headerName: "Lat", width: 130 },
+    // { field: "lng", headerName: "Lng", width: 130 },
+    // { field: "radius", headerName: "Radius", width: 110 },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to="/updateBusiness/" state={{ row: params.row }}>
+              <button className="incentive-list-edit">Edit</button>
+            </Link>
+            <Link
+              to={"/BusinessDetail/" + params.row.id}
+              state={{ row: params.row }}
+            >
+              <button className="incentive-list-edit">Details</button>
+            </Link>
+            <DeleteOutlineOutlinedIcon
+              className="incentive-list-delete"
+              onClick={() => handleDelete(params.row.id)}
+            />
+          </>
+        );
+      },
+    },
+  ];
 
   return (
     <div className="incentive">
-      <div className="incentive-heading">Business</div>
+      <div className="incentive-heading">Businesses List</div>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -111,7 +116,7 @@ const BusinessList = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BusinessList
+export default BusinessList;

@@ -180,7 +180,7 @@ const Users = () => {
     },
     {
       field: "exchange_points",
-      headerName: "Exchange Points",
+      headerName: "Exchanged Points",
       width: 180,
       renderCell: (params) => {
         return (

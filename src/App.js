@@ -30,6 +30,7 @@ import AccumulatedPoints from "./pages/accumulatedPoints/AccumulatedPoints";
 import MyRewards from "./pages/myRewards/MyRewards";
 import UserExchangePoints from "./pages/userExchangePoints/UserExchangePoints";
 import CreateBusiness from "./pages/createbusiness/CreateBusiness";
+import UpdateBusiness from "./pages/updateBusiness/UpdateBusiness";
 import BusinessList from "./pages/business/BusinessList";
 import BusinessDetail from "./pages/businessDetail/BusinessDetail";
 
@@ -218,6 +219,14 @@ function App() {
           element={
             <PrivateRoute>
               <CreateBusiness />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/updateBusiness"
+          element={
+            <PrivateRoute>
+              <UpdateBusiness />
             </PrivateRoute>
           }
         />
