@@ -5,8 +5,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { earnedList, searchEarned } from "../../redux/features/earnedSlice";
+import { earnedList, filterEarned, searchEarned } from "../../redux/features/earnedSlice";
 import moment from "moment";
+import { Button, Tooltip } from "@mui/material";
+import { Search } from "@mui/icons-material";
 
 // const initialState = {
 //   from: "",
@@ -36,18 +38,34 @@ const EarnedPoints = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // if (from && to) {
+    //   dispatch(searchEarned({ from, to }));
+    //   navigate(`/pointsEarned/search?from=${from}&to=${to}`);
+    //   // setFrom("");
+    //   // setTo("");
+    // } else {
+    //   navigate("/earnedPoints");
+    // }
+
+
     if (from && to) {
-      dispatch(searchEarned({ from, to }));
-      navigate(`/pointsEarned/search?from=${from}&to=${to}`);
+      dispatch(
+        filterEarned({
+          from: new Date(from).getTime(),
+          to: new Date(to).getTime(),
+        })
+      );
+      // navigate(`/exchangePoints/search?from=${from}&to=${to}`);
       // setFrom("");
       // setTo("");
     } else {
-      navigate("/earnedPoints");
+      navigate("/earnedpoints");
     }
+
   };
   useEffect(() => {
     dispatch(searchEarned({ from, to }));
-  }, [from, to]);
+  }, []);
 
   // useEffect(() => {
   //   dispatch(earnedList());
@@ -156,7 +174,11 @@ const EarnedPoints = () => {
             />
           </div>
         </div>
-        {/* <button>submit</button> */}
+        <Button type="submit" style={{ marginTop: 15 }}>
+          <Tooltip title="filter">
+            <Search />
+          </Tooltip>
+        </Button>
       </form>
       {/* </div> */}
       {loading ? (

@@ -25,7 +25,7 @@ export const UpdateIncentive = (props) => {
   const initialState = {
     img: data?.img ?? "",
     name: data?.name ?? "",
-    value: data?.value,
+    value: data?.value || "",
     quantity: data?.quantity,
     req_point: data?.req_point,
     laat: data?.lat ?? "",
@@ -33,6 +33,8 @@ export const UpdateIncentive = (props) => {
     radius: data?.radius,
     cardcode: data?.cardcode,
     expiry_date: data?.expiry_date,
+    single_code: data?.single_code,
+    code_img: data?.code_img,
   };
   const initialMapState = {
     address: "",
@@ -46,6 +48,8 @@ export const UpdateIncentive = (props) => {
 
   const [state, setState] = useState(initialMapState);
   const [formValue, setFormValue] = useState(initialState);
+  const [giftType, setGiftType] = useState(formValue.code_img ? "1" : "2");
+
   const { loading, error } = useSelector((state) => ({
     ...state.incentive,
   }));
@@ -60,6 +64,8 @@ export const UpdateIncentive = (props) => {
     radius,
     img,
     cardcode,
+    single_code,
+    code_img,
     expiry_date,
   } = formValue;
 
@@ -79,8 +85,8 @@ export const UpdateIncentive = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (name && value && quantity && req_point) {
+    // return console.log(formValue);
+    if (name && quantity && req_point) {
       dispatch(updateIncentive({ id, formValue, navigate }));
     }
   };
@@ -88,6 +94,12 @@ export const UpdateIncentive = (props) => {
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
+  };
+
+  const uploadCodeImage = (e) => {
+    let { name, files } = e.target;
+    setState({ ...state, code_img: files[0] });
+    setFormValue({ ...formValue, code_img: e.target.files[0] });
   };
 
   const uploadImage = (e) => {
@@ -116,8 +128,6 @@ export const UpdateIncentive = (props) => {
       .catch((error) => console.error("Error", error));
   };
 
-  console.log(laat, lang);
-
   return (
     <div className="incentive">
       <div className="incentive-top">Update Incentive</div>
@@ -137,7 +147,20 @@ export const UpdateIncentive = (props) => {
                     onChange={onInputChange}
                   />
                 </div>
-                {data?.type === 1 && (
+
+                <div>
+                  <label>Select Gift Card Type</label>
+                  <select
+                    className="incentive-input incentive-select"
+                    value={giftType}
+                    name="business_id"
+                    onChange={(e) => setGiftType(e.target.value)}
+                  >
+                    <option value={1}>Single Code</option>
+                    <option value={2}>Multiple Codes</option>
+                  </select>
+                </div>
+                {data?.type === 1 && giftType == 2 && (
                   <>
                     <div style={style}>
                       <label>Gift Card Pre Code</label>
@@ -162,6 +185,18 @@ export const UpdateIncentive = (props) => {
                     </div>
                   </>
                 )}
+                {data?.type === 1 && giftType == 1 && (
+                  <div>
+                    <label>Gift Card Code</label>
+                    <input
+                      className="incentive-input"
+                      value={single_code}
+                      name="single_code"
+                      placeholder="Gift Code"
+                      onChange={onInputChange}
+                    />
+                  </div>
+                )}
                 {/* <input
                   type="text"
                   className="incentive-input"
@@ -172,11 +207,11 @@ export const UpdateIncentive = (props) => {
                 /> */}
                 {data?.type == 2 && (
                   <div>
-                    <label>Quantity Of Incentive</label>
+                    <label>Value Of Incentive</label>
                     <input
                       type="number"
                       className="incentive-input"
-                      placeholder="Enter Quantity Of Incentive"
+                      placeholder="Enter Value Of Incentive"
                       value={value}
                       name="value"
                       onChange={onInputChange}
@@ -184,11 +219,11 @@ export const UpdateIncentive = (props) => {
                   </div>
                 )}
                 <div style={style}>
-                  <label>Value Of Incentive</label>
+                  <label>Quantity Of Incentive</label>
                   <input
                     type="text"
                     className="incentive-input"
-                    placeholder="Enter Value Of Incentive"
+                    placeholder="Enter Quantity Of Incentive"
                     value={quantity}
                     name="quantity"
                     onChange={onInputChange}
@@ -206,17 +241,54 @@ export const UpdateIncentive = (props) => {
                   />
                 </div>
                 {data?.type === 1 && (
-                  <div>
-                    <label>Expiry Date</label>
-                    <input
-                      type="date"
-                      className="incentive-input"
-                      placeholder="Enter Expiry Date"
-                      value={expiry_date}
-                      name="expiry_date"
-                      onChange={onInputChange}
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label>Expiry Date</label>
+                      <input
+                        type="date"
+                        className="incentive-input"
+                        placeholder="Enter Expiry Date"
+                        value={expiry_date}
+                        name="expiry_date"
+                        onChange={onInputChange}
+                      />
+                    </div>
+
+                    {giftType == 1 && (
+                      <div style={{ margin: "10px 35px" }}>
+                        <span> Gift Code Image</span>
+                        <label
+                          htmlFor="file"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <img
+                              className="img"
+                              src={
+                                state.code_img
+                                  ? URL.createObjectURL(state.code_img)
+                                  : IMAGE_BASE_URL + code_img
+                              }
+                              alt=""
+                            />
+                          </div>
+                          <input
+                            type="file"
+                            id="file"
+                            accept=".png,.jpeg,.jpg"
+                            name="img"
+                            onChange={uploadCodeImage}
+                          />
+                        </label>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -235,6 +307,7 @@ export const UpdateIncentive = (props) => {
               )}
 
               <div style={{ margin: "10px 35px" }}>
+                <span> Incentive Image</span>
                 <label
                   htmlFor="file"
                   style={{
@@ -243,10 +316,6 @@ export const UpdateIncentive = (props) => {
                     cursor: "pointer",
                   }}
                 >
-                  {/* <PermMediaIcon
-                    htmlColor="tomato"
-                    style={{ marginRight: "5px" }}
-                  /> */}
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <img
                       className="img"
@@ -258,23 +327,6 @@ export const UpdateIncentive = (props) => {
                       alt=""
                     />
                   </div>
-                  {/* <span>Choose Image</span> */}
-                  {/* <input
-                    style={{ display: "none" }}
-                    type='file'
-                    id='file'
-                    accept='.png,.jpeg,.jpg'
-                    value={img}
-                    name='img'
-                    onChange={onInputChange}
-                  /> */}
-                  {/* <FileBase
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }) =>
-                      setFormValue({ ...formValue, img: base64 })
-                    }
-                  /> */}
 
                   <input
                     type="file"

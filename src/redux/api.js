@@ -70,6 +70,8 @@ export const deleteIncentive = (id) => API.get(`/api/delete_incentive/${id}`);
 export const earnedList = () => API.get("/api/earned_points");
 export const searchEarned = ({ from, to }) =>
   API.get(`/api/earned_points?from=${from}&to=${to}`);
+export const filterEarned = ({ from, to }) =>
+  API.get(`/api/filter_earn_points?from=${from}&to=${to}`);
 
 // exchange slice
 

@@ -48,6 +48,8 @@ const initialState = {
   business_id: 0,
   expiry_date: "",
   img: "",
+  single_code: "",
+  code_img: "",
 };
 const initialMapState = {
   address: "",
@@ -63,11 +65,14 @@ const initialMapState = {
   mapCenter: "",
   divStatus: 1,
   expiry_date: "",
+  single_code: "",
+  code_img: "",
 };
 
 export const Incentive = (props) => {
   const [state, setState] = useState(initialMapState);
   const [formValue, setFormValue] = useState(initialState);
+  const [giftType, setGiftType] = useState("1");
   const { loading, error } = useSelector((state) => ({
     ...state.incentive,
   }));
@@ -83,6 +88,7 @@ export const Incentive = (props) => {
     radius,
     img,
     cardcode,
+    single_code,
     description,
     locationStatus,
     businessList,
@@ -106,14 +112,14 @@ export const Incentive = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    // return console.log(formValue);
     const formData = new FormData();
     Object.keys(formValue).forEach(function (key) {
       formData.append(key, formValue[key]);
     });
 
     // console.log(formValue);
-    if (name && value && quantity && req_point) {
+    if (name && quantity && req_point) {
       dispatch(createIncentive({ formValue, navigate }));
     }
   };
@@ -122,6 +128,7 @@ export const Incentive = (props) => {
       const req2 = await axios.get("/business_list");
       let name = "businessList";
       let value = req2.data.data;
+
       setFormValue({ ...formValue, [name]: value });
       // setInterval(fetchData, 1000);
     }
@@ -136,7 +143,7 @@ export const Incentive = (props) => {
     let { name, value } = e.target;
     setState({ ...state, divStatus: value });
     setFormValue({ ...formValue, [name]: value });
-    console.log(value);
+    // console.log(value);
   };
 
   const onInputChange3 = (e) => {
@@ -149,6 +156,12 @@ export const Incentive = (props) => {
     let { name, value } = e.target;
     setState({ ...state, expiry_date: value });
     setFormValue({ ...formValue, [name]: value });
+  };
+
+  const uploadCodeImage = (e) => {
+    let { name, files } = e.target;
+    setState({ ...state, code_img: files[0] });
+    setFormValue({ ...formValue, code_img: e.target.files[0] });
   };
 
   const uploadImage = (e) => {
@@ -187,7 +200,7 @@ export const Incentive = (props) => {
 
   // console.log(laat, lang);
 
-  // console.log(props.value);
+  // console.log(giftType);
 
   return (
     <div className="incentive">
@@ -229,35 +242,64 @@ export const Incentive = (props) => {
                       </select>
                     </div>
                     <div>
-                      <label>Gift Card Pre Code</label>
-                      <input
-                        className="incentive-input"
-                        value={cardcode}
-                        name="cardcode"
-                        placeholder="GiftCode-"
-                        onChange={onInputChange}
-                      />
+                      <label>Select Gift Card Type</label>
+                      <select
+                        className="incentive-input incentive-select"
+                        value={giftType}
+                        name="business_id"
+                        onChange={(e) => setGiftType(e.target.value)}
+                      >
+                        <option value={1}>Single Code</option>
+                        <option value={2}>Multiple Codes</option>
+                      </select>
                     </div>
-                    <div>
-                      <label>Gift Card Value</label>
-                      <input
-                        className="incentive-input"
-                        type="number"
-                        value={gift_value}
-                        name="gift_value"
-                        onChange={onInputChange}
-                      />
-                    </div>
-                    <div>
-                      <label>Minimum Purchase to Avail Discount</label>
-                      <input
-                        className="incentive-input"
-                        type="number"
-                        value={value}
-                        name="value"
-                        onChange={onInputChange}
-                      />
-                    </div>
+                    {giftType == 1 && (
+                      <div>
+                        <label>Gift Card Code</label>
+                        <input
+                          className="incentive-input"
+                          value={single_code}
+                          name="single_code"
+                          placeholder="Gift Code"
+                          onChange={onInputChange}
+                        />
+                      </div>
+                    )}
+                    {giftType == 2 && (
+                      <>
+                        <div>
+                          <label>Gift Card Pre Code</label>
+                          <input
+                            className="incentive-input"
+                            value={cardcode}
+                            name="cardcode"
+                            placeholder="GiftCode-"
+                            onChange={onInputChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label>Gift Card Value</label>
+                          <input
+                            className="incentive-input"
+                            type="number"
+                            value={gift_value}
+                            name="gift_value"
+                            onChange={onInputChange}
+                          />
+                        </div>
+                        <div>
+                          <label>Minimum Purchase to Avail Discount</label>
+                          <input
+                            className="incentive-input"
+                            type="number"
+                            value={value}
+                            name="value"
+                            onChange={onInputChange}
+                          />
+                        </div>
+                      </>
+                    )}
                     {/* <div>
                  <label> Description</label>
                  <textarea
@@ -285,11 +327,11 @@ export const Incentive = (props) => {
                 </div>
                 {divStatus == 2 && (
                   <div>
-                    <label>Quantity Of Incentive</label>
+                    <label>Value Of Incentive</label>
                     <input
                       type="number"
                       className="incentive-input"
-                      placeholder="Enter Quantity Of Incentive"
+                      placeholder="Enter Value Of Incentive"
                       value={value}
                       name="value"
                       onChange={onInputChange}
@@ -297,11 +339,11 @@ export const Incentive = (props) => {
                   </div>
                 )}
                 <div>
-                  <label>Value Of Incentive</label>
+                  <label>Quantity Of Incentive</label>
                   <input
                     type="number"
                     className="incentive-input"
-                    placeholder="Enter Value Of Incentive"
+                    placeholder="Enter Quantity Of Incentive"
                     value={quantity}
                     name="quantity"
                     onChange={onInputChange}
@@ -320,17 +362,54 @@ export const Incentive = (props) => {
                 </div>
 
                 {divStatus == 1 && (
-                  <div>
-                    <label>Expiry Date</label>
-                    <input
-                      type="date"
-                      className="incentive-input"
-                      placeholder="Enter Expiry Date"
-                      value={expiry_date}
-                      name="expiry_date"
-                      onChange={onInputChange4}
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label>Expiry Date</label>
+                      <input
+                        type="date"
+                        className="incentive-input"
+                        placeholder="Enter Expiry Date"
+                        value={expiry_date}
+                        name="expiry_date"
+                        onChange={onInputChange4}
+                      />
+                    </div>
+
+                    {giftType == 1 && (
+                      <div>
+                        <label
+                          htmlFor="file"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <PermMediaIcon
+                            htmlColor="tomato"
+                            style={{ marginRight: "5px" }}
+                          />
+                          <span>Gift Code Image</span>
+                          <input
+                            type="file"
+                            id="file"
+                            accept=".png,.jpeg,.jpg"
+                            name="img"
+                            onChange={uploadCodeImage}
+                          />
+                          {/* <FileBase
+                      style={{ display: "none" }}
+                      type="file"
+                      multiple={false}
+                      onDone={({ base64 }) =>
+                        setFormValue({ ...formValue, img: base64 })
+                      }
+                    /> */}
+                        </label>
+                      </div>
+                    )}
+                    <br />
+                  </>
                 )}
 
                 {locationStatus && divStatus == 2 && (

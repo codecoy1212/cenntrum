@@ -21,6 +21,7 @@ const Incentives = () => {
   const { incentives, loading, error } = useSelector((state) => ({
     ...state.incentive,
   }));
+
   const [incentivesFilter, setIncentivesFilter] = useState([]);
   const [isFilter, setisFilter] = useState(false);
   const dispatch = useDispatch();
@@ -39,7 +40,9 @@ const Incentives = () => {
 
   const filter = (event, value) => {
     setisFilter(true);
-    setIncentivesFilter(incentives.filter((item) => item.type == value));
+    setIncentivesFilter(
+      incentives.incentives.filter((item) => item.type == value)
+    );
   };
 
   const columns = [
@@ -125,7 +128,20 @@ const Incentives = () => {
     // },
     { field: "lat", headerName: "Lat", width: 130 },
     { field: "lng", headerName: "Lng", width: 130 },
-    { field: "radius", headerName: "Radius", width: 110 },
+    {
+      field: "radius",
+      headerName: "Radius",
+      width: 110,
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.type === 1
+              ? incentives.default_radius
+              : params.row.radius}
+          </>
+        );
+      },
+    },
     {
       field: "action",
       headerName: "Action",
@@ -172,7 +188,13 @@ const Incentives = () => {
             </RadioGroup>
           </FormControl>
           <DataGrid
-            rows={isFilter ? incentivesFilter : incentives}
+            rows={
+              isFilter
+                ? incentivesFilter
+                : incentives?.incentives
+                ? incentives?.incentives
+                : []
+            }
             columns={columns}
             pageSize={50}
             rowsPerPageOptions={[50]}

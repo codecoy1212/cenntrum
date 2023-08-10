@@ -29,7 +29,12 @@ export const incentiveList = createAsyncThunk(
   async () => {
     try {
       const response = await api.incentiveList();
-      return response.data;
+      return {
+        data: {
+          incentives: response.data.data,
+          default_radius: response.data.default_radius.business_radius,
+        },
+      };
     } catch (err) {
       return err.response.data;
     }

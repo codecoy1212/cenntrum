@@ -25,6 +25,18 @@ export const searchEarned = createAsyncThunk(
   }
 );
 
+export const filterEarned = createAsyncThunk(
+  "earnedPoint/searchEarned",
+  async ({ from, to }, { rejectWithValue }) => {
+    try {
+      const response = await api.filterEarned({ from, to });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 const earnedSlice = createSlice({
   name: "earnedPoint",
   initialState: {
