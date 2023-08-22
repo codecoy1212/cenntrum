@@ -277,29 +277,28 @@ export const Incentive = (props) => {
                             onChange={onInputChange}
                           />
                         </div>
-
-                        <div>
-                          <label>Gift Card Value</label>
-                          <input
-                            className="incentive-input"
-                            type="number"
-                            value={gift_value}
-                            name="gift_value"
-                            onChange={onInputChange}
-                          />
-                        </div>
-                        <div>
-                          <label>Minimum Purchase to Avail Discount</label>
-                          <input
-                            className="incentive-input"
-                            type="number"
-                            value={value}
-                            name="value"
-                            onChange={onInputChange}
-                          />
-                        </div>
                       </>
                     )}
+                    <div>
+                      <label>Gift Card Value</label>
+                      <input
+                        className="incentive-input"
+                        type="number"
+                        value={gift_value}
+                        name="gift_value"
+                        onChange={onInputChange}
+                      />
+                    </div>
+                    <div>
+                      <label>Minimum Purchase to Avail Discount</label>
+                      <input
+                        className="incentive-input"
+                        type="number"
+                        value={value}
+                        name="value"
+                        onChange={onInputChange}
+                      />
+                    </div>
                     {/* <div>
                  <label> Description</label>
                  <textarea

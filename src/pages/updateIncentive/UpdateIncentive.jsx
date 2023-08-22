@@ -35,6 +35,7 @@ export const UpdateIncentive = (props) => {
     expiry_date: data?.expiry_date,
     single_code: data?.single_code,
     code_img: data?.code_img,
+    gift_value: data?.gift_value,
   };
   const initialMapState = {
     address: "",
@@ -67,6 +68,7 @@ export const UpdateIncentive = (props) => {
     single_code,
     code_img,
     expiry_date,
+    gift_value,
   } = formValue;
 
   const {
@@ -172,17 +174,6 @@ export const UpdateIncentive = (props) => {
                         disabled
                       />
                     </div>
-
-                    <div style={style}>
-                      <label>Minimum Purchase to Avail Discount</label>
-                      <input
-                        className="incentive-input"
-                        type="number"
-                        value={value}
-                        name="value"
-                        onChange={onInputChange}
-                      />
-                    </div>
                   </>
                 )}
                 {data?.type === 1 && giftType == 1 && (
@@ -197,6 +188,26 @@ export const UpdateIncentive = (props) => {
                     />
                   </div>
                 )}
+                <div>
+                  <label>Gift Card Value</label>
+                  <input
+                    className="incentive-input"
+                    type="number"
+                    value={gift_value}
+                    name="gift_value"
+                    onChange={onInputChange}
+                  />
+                </div>
+                <div style={style}>
+                  <label>Minimum Purchase to Avail Discount</label>
+                  <input
+                    className="incentive-input"
+                    type="number"
+                    value={value}
+                    name="value"
+                    onChange={onInputChange}
+                  />
+                </div>
                 {/* <input
                   type="text"
                   className="incentive-input"
